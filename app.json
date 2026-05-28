@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Mobile Boilerplate",
+    "slug": "mobile-boilerplate",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "mobileboilerplate",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.mobileboilerplate"
+    },
+    "android": {
+      "package": "com.example.mobileboilerplate",
+      "permissions": [
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "plugins": [
+      "expo-notifications"
+    ]
+  }
+}
