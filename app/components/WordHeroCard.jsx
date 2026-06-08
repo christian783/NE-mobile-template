@@ -2,12 +2,15 @@ import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 
-import { COLORS, FONTS, RADIUS, SPACING } from '../constants';
+import { FONTS, RADIUS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 import { useAudioPlayer } from '../services/audioService';
 
 const WordHeroCard = ({ word, phonetic, audioUrl }) => {
   const [pulse] = useState(() => new Animated.Value(1));
   const { isPlaying, play } = useAudioPlayer();
+  const { colors, fontSizes } = useSettings();
+  const styles = createStyles(colors, fontSizes);
 
   useEffect(() => {
     if (!isPlaying) {
@@ -58,7 +61,7 @@ const WordHeroCard = ({ word, phonetic, audioUrl }) => {
         >
           <Animated.View style={{ opacity: pulse }}>
             <Ionicons
-              color={audioUrl ? COLORS.accentLight : COLORS.inactive}
+              color={audioUrl ? colors.accentLight : colors.inactive}
               name="volume-high"
               size={22}
             />
@@ -70,10 +73,10 @@ const WordHeroCard = ({ word, phonetic, audioUrl }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors, fontSizes) => StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     marginBottom: SPACING.xl,
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
     padding: SPACING.lg
   },
   glow: {
-    backgroundColor: COLORS.accentMuted,
+    backgroundColor: colors.accentMuted,
     borderRadius: 80,
     height: 120,
     opacity: 0.32,
@@ -91,10 +94,10 @@ const styles = StyleSheet.create({
     width: 120
   },
   word: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     fontFamily: FONTS.display,
-    fontSize: 48,
-    lineHeight: 56,
+    fontSize: fontSizes.word,
+    lineHeight: fontSizes.word + 8,
     marginBottom: SPACING.sm
   },
   meta: {
@@ -104,21 +107,21 @@ const styles = StyleSheet.create({
     gap: SPACING.md
   },
   phonetic: {
-    backgroundColor: 'rgba(167, 139, 250, 0.10)',
-    borderColor: 'rgba(167, 139, 250, 0.20)',
+    backgroundColor: colors.accentMuted,
+    borderColor: colors.border,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
-    color: COLORS.violet,
+    color: colors.violet,
     fontFamily: FONTS.mono,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: fontSizes.phonetic,
+    lineHeight: fontSizes.phonetic + 6,
     overflow: 'hidden',
     paddingHorizontal: 12,
     paddingVertical: 5
   },
   audioButton: {
     alignItems: 'center',
-    backgroundColor: COLORS.surfaceContainer,
+    backgroundColor: colors.surfaceContainer,
     borderRadius: RADIUS.full,
     height: 40,
     justifyContent: 'center',
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
     opacity: 0.75
   },
   playing: {
-    color: COLORS.accentLight,
+    color: colors.accentLight,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20

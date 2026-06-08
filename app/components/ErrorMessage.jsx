@@ -1,9 +1,12 @@
 import { Animated, StyleSheet, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
 const ErrorMessage = ({ message, style }) => {
+  const { colors } = useSettings();
+  const styles = createStyles(colors);
   const [opacity] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
@@ -25,12 +28,12 @@ const ErrorMessage = ({ message, style }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     marginTop: SPACING.sm
   },
   text: {
-    color: COLORS.error,
+    color: colors.error,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20

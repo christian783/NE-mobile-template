@@ -1,27 +1,36 @@
 {
   "expo": {
-    "name": "Mobile Boilerplate",
-    "slug": "mobile-boilerplate",
+    "name": "LexiDict",
+    "slug": "lexidict",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "scheme": "mobileboilerplate",
+    "scheme": "lexidict",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.example.mobileboilerplate"
+      "bundleIdentifier": "com.example.lexidict"
     },
     "android": {
-      "package": "com.example.mobileboilerplate",
+      "package": "com.example.lexidict",
       "permissions": [
-        "POST_NOTIFICATIONS"
+        "POST_NOTIFICATIONS",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ]
     },
     "plugins": [
       "expo-notifications",
       "expo-audio"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a74048e9-86ab-4bb3-8b3a-698f0e350016"
+      }
+    }
   }
 }

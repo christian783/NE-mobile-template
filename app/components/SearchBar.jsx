@@ -1,41 +1,47 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS, FONTS, RADIUS, SPACING } from '../constants';
+import { FONTS, RADIUS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
-const SearchBar = ({ value, onChangeText, onSubmit, error, loading }) => (
-  <View style={[styles.container, error && styles.containerError]}>
-    <Ionicons color={COLORS.accentLight} name="search" size={20} />
-    <TextInput
-      autoCapitalize="none"
-      autoCorrect={false}
-      editable={!loading}
-      keyboardAppearance="dark"
-      onChangeText={onChangeText}
-      onSubmitEditing={onSubmit}
-      placeholder="Search a word..."
-      placeholderTextColor={COLORS.outline}
-      returnKeyType="search"
-      style={styles.input}
-      value={value}
-    />
-    <TouchableOpacity
-      accessibilityLabel="Search"
-      activeOpacity={0.75}
-      disabled={loading}
-      onPress={onSubmit}
-      style={[styles.button, loading && styles.buttonDisabled]}
-    >
-      <Ionicons color={COLORS.onAccent} name="arrow-forward" size={18} />
-    </TouchableOpacity>
-  </View>
-);
+const SearchBar = ({ value, onChangeText, onSubmit, error, loading }) => {
+  const { colors } = useSettings();
+  const styles = createStyles(colors);
 
-const styles = StyleSheet.create({
+  return (
+    <View style={[styles.container, error && styles.containerError]}>
+      <Ionicons color={colors.accentLight} name="search" size={20} />
+      <TextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        editable={!loading}
+        keyboardAppearance="dark"
+        onChangeText={onChangeText}
+        onSubmitEditing={onSubmit}
+        placeholder="Search a word..."
+        placeholderTextColor={colors.outline}
+        returnKeyType="search"
+        style={styles.input}
+        value={value}
+      />
+      <TouchableOpacity
+        accessibilityLabel="Search"
+        activeOpacity={0.75}
+        disabled={loading}
+        onPress={onSubmit}
+        style={[styles.button, loading && styles.buttonDisabled]}
+      >
+        <Ionicons color={colors.onAccent} name="arrow-forward" size={18} />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const createStyles = (colors) => StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderRadius: RADIUS.xl,
     borderWidth: 1,
     flexDirection: 'row',
@@ -44,10 +50,10 @@ const styles = StyleSheet.create({
     paddingRight: 6
   },
   containerError: {
-    borderColor: COLORS.error
+    borderColor: colors.error
   },
   input: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     flex: 1,
     fontFamily: FONTS.mono,
     fontSize: 14,
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: COLORS.accentLight,
+    backgroundColor: colors.accentLight,
     borderRadius: RADIUS.full,
     height: 36,
     justifyContent: 'center',

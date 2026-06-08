@@ -1,44 +1,62 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
-const AppHeader = ({ title = 'LexiDict', onMenuPress, onBackPress, showBack }) => (
-  <View style={styles.header}>
-    <TouchableOpacity
-      accessibilityLabel={showBack ? 'Go back' : 'Open menu'}
-      activeOpacity={0.75}
-      onPress={showBack ? onBackPress : onMenuPress}
-      style={styles.iconButton}
-    >
-      <Ionicons
-        color={COLORS.accentLight}
-        name={showBack ? 'arrow-back' : 'menu'}
-        size={24}
-      />
-    </TouchableOpacity>
-    <Text numberOfLines={1} style={styles.title}>
-      {title}
-    </Text>
-    <TouchableOpacity
-      accessibilityLabel={showBack ? 'Open menu' : 'Search'}
-      activeOpacity={0.75}
-      onPress={showBack ? onMenuPress : undefined}
-      style={styles.iconButton}
-    >
-      <Ionicons
-        color={COLORS.accentLight}
-        name={showBack ? 'menu' : 'search'}
-        size={22}
-      />
-    </TouchableOpacity>
-  </View>
-);
+const AppHeader = ({
+  onBackPress,
+  onMenuPress,
+  onRightPress,
+  rightElement,
+  showBack,
+  title = 'LexiDict'
+}) => {
+  const { colors } = useSettings();
+  const styles = createStyles(colors);
+  const hasRightAction = showBack ? Boolean(onMenuPress) : Boolean(onRightPress);
 
-const styles = StyleSheet.create({
+  return (
+    <View style={styles.header}>
+      <TouchableOpacity
+        accessibilityLabel={showBack ? 'Go back' : 'Open menu'}
+        activeOpacity={0.75}
+        onPress={showBack ? onBackPress : onMenuPress}
+        style={styles.iconButton}
+      >
+        <Ionicons
+          color={colors.accentLight}
+          name={showBack ? 'arrow-back' : 'menu'}
+          size={24}
+        />
+      </TouchableOpacity>
+      <Text numberOfLines={1} style={styles.title}>
+        {title}
+      </Text>
+      {rightElement || (hasRightAction ? (
+        <TouchableOpacity
+          accessibilityLabel={showBack ? 'Open menu' : 'Search'}
+          activeOpacity={0.75}
+          onPress={showBack ? onMenuPress : onRightPress}
+          style={styles.iconButton}
+        >
+          <Ionicons
+            color={colors.accentLight}
+            name={showBack ? 'menu' : 'search'}
+            size={22}
+          />
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.iconButton} />
+      ))}
+    </View>
+  );
+};
+
+const createStyles = (colors) => StyleSheet.create({
   header: {
     alignItems: 'center',
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     flexDirection: 'row',
     height: 64,
     justifyContent: 'space-between',
@@ -52,7 +70,7 @@ const styles = StyleSheet.create({
     width: 40
   },
   title: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     flex: 1,
     fontFamily: FONTS.display,
     fontSize: 28,

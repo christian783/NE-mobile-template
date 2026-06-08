@@ -2,13 +2,16 @@ import { Animated, Image, StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
 const logo = require('../../assets/logo.png');
 
 const SplashScreen = ({ navigation }) => {
   const [opacity] = useState(() => new Animated.Value(0));
   const [translateY] = useState(() => new Animated.Value(20));
+  const { colors, settings } = useSettings();
+  const styles = createStyles(colors);
 
   useEffect(() => {
     Animated.timing(opacity, {
@@ -32,7 +35,7 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      <StatusBar style={settings.darkMode ? 'light' : 'dark'} />
       <Animated.View
         style={[styles.content, { opacity, transform: [{ translateY }] }]}
       >
@@ -44,10 +47,10 @@ const SplashScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: SPACING.screen
@@ -61,14 +64,14 @@ const styles = StyleSheet.create({
     width: 100
   },
   title: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     fontFamily: FONTS.display,
     fontSize: 36,
     lineHeight: 44,
     marginBottom: SPACING.xs
   },
   tagline: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20

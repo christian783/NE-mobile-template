@@ -20,7 +20,34 @@ export const COLORS = {
   border: '#2A2A2A',
   outline: '#8C909E',
   outlineVariant: '#424753',
-  inactive: '#3A3A3A'
+  inactive: '#3A3A3A',
+  overlay: 'rgba(0,0,0,0.5)'
+};
+
+export const LIGHT_COLORS = {
+  background: '#F5F5F5',
+  surface: '#FFFFFF',
+  surfaceDeep: '#EBEBEB',
+  surfaceBright: '#F0F0F0',
+  surfaceContainer: '#FFFFFF',
+  accent: '#4F8EF7',
+  accentLight: '#4F8EF7',
+  accentMuted: '#DDEAFF',
+  accentContainer: '#4F8EF7',
+  onAccent: '#FFFFFF',
+  violet: '#7C5CDB',
+  success: '#22C984',
+  error: '#E05252',
+  errorSoft: '#E05252',
+  textPrimary: '#0D0D0D',
+  text: '#0D0D0D',
+  textSecondary: '#6B7280',
+  textTertiary: '#6B7280',
+  border: '#E0E0E0',
+  outline: '#6B7280',
+  outlineVariant: '#E0E0E0',
+  inactive: '#BDBDBD',
+  overlay: 'rgba(13,13,13,0.22)'
 };
 
 export default COLORS;
