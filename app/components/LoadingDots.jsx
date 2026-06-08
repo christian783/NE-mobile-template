@@ -1,9 +1,12 @@
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
 const LoadingDots = () => {
+  const { colors } = useSettings();
+  const styles = createStyles(colors);
   const [dots] = useState(() => [
     new Animated.Value(0),
     new Animated.Value(0),
@@ -49,7 +52,7 @@ const LoadingDots = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center'
@@ -60,13 +63,13 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.sm
   },
   dot: {
-    backgroundColor: COLORS.accentLight,
+    backgroundColor: colors.accentLight,
     borderRadius: 6,
     height: 12,
     width: 12
   },
   text: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20

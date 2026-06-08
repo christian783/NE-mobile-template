@@ -2,43 +2,49 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
-import { COLORS, FONTS, RADIUS, SPACING } from '../constants';
+import { FONTS, RADIUS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
-const NetworkErrorScreen = ({ navigation }) => (
-  <SafeAreaView style={styles.safeArea}>
-    <StatusBar style="light" />
-    <View style={styles.card}>
-      <View style={styles.iconBubble}>
-        <Ionicons color={COLORS.errorSoft} name="wifi-outline" size={42} />
+const NetworkErrorScreen = ({ navigation }) => {
+  const { colors, settings } = useSettings();
+  const styles = createStyles(colors);
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar style={settings.darkMode ? 'light' : 'dark'} />
+      <View style={styles.card}>
+        <View style={styles.iconBubble}>
+          <Ionicons color={colors.errorSoft} name="wifi-outline" size={42} />
+        </View>
+        <Text style={styles.title}>Network Error</Text>
+        <Text style={styles.message}>
+          No internet connection. Please check your network and try again.
+        </Text>
+        <TouchableOpacity
+          activeOpacity={0.75}
+          onPress={() => navigation.goBack()}
+          style={styles.button}
+        >
+          <Ionicons color={colors.onAccent} name="refresh" size={20} />
+          <Text style={styles.buttonText}>Try Again</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.title}>Network Error</Text>
-      <Text style={styles.message}>
-        No internet connection. Please check your network and try again.
-      </Text>
-      <TouchableOpacity
-        activeOpacity={0.75}
-        onPress={() => navigation.goBack()}
-        style={styles.button}
-      >
-        <Ionicons color={COLORS.onAccent} name="refresh" size={20} />
-        <Text style={styles.buttonText}>Try Again</Text>
-      </TouchableOpacity>
-    </View>
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  );
+};
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   safeArea: {
     alignItems: 'center',
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: SPACING.screen
   },
   card: {
     alignItems: 'center',
-    backgroundColor: COLORS.surfaceDeep,
-    borderColor: COLORS.outlineVariant,
+    backgroundColor: colors.surfaceDeep,
+    borderColor: colors.outlineVariant,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
     justifyContent: 'center',
@@ -48,8 +54,8 @@ const styles = StyleSheet.create({
   },
   iconBubble: {
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderRadius: RADIUS.full,
     borderWidth: 1,
     height: 90,
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
     width: 90
   },
   title: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     fontFamily: FONTS.bodyBold,
     fontSize: 20,
     lineHeight: 28,
@@ -66,7 +72,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   message: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20,
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: COLORS.accentContainer,
+    backgroundColor: colors.accentContainer,
     borderRadius: RADIUS.sm,
     flexDirection: 'row',
     gap: SPACING.sm,
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   buttonText: {
-    color: COLORS.onAccent,
+    color: colors.onAccent,
     fontFamily: FONTS.bodyBold,
     fontSize: 18,
     lineHeight: 24

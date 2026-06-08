@@ -8,13 +8,21 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
 import { useHistory } from '../context/HistoryContext';
+import { useSettings } from '../context/SettingsContext';
 
 const logo = require('../../assets/logo.png');
 
 const DrawerContent = ({ navigation }) => {
   const { history } = useHistory();
+  const { colors } = useSettings();
+  const styles = createStyles(colors);
+
+  const openStackScreen = (screen) => {
+    navigation.closeDrawer();
+    navigation.navigate('Main', { screen });
+  };
 
   const openHistoryWord = (word) => {
     navigation.closeDrawer();
@@ -31,12 +39,26 @@ const DrawerContent = ({ navigation }) => {
       style={styles.historyItem}
     >
       <View style={styles.historyItemLeft}>
-        <Ionicons color={COLORS.textSecondary} name="time-outline" size={18} />
+        <Ionicons color={colors.textSecondary} name="time-outline" size={18} />
         <Text numberOfLines={1} style={styles.historyWord}>
           {item}
         </Text>
       </View>
-      <Ionicons color={COLORS.inactive} name="chevron-forward" size={18} />
+      <Ionicons color={colors.inactive} name="chevron-forward" size={18} />
+    </TouchableOpacity>
+  );
+
+  const renderNavItem = (icon, label, screen) => (
+    <TouchableOpacity
+      activeOpacity={0.75}
+      onPress={() => openStackScreen(screen)}
+      style={styles.navItem}
+    >
+      <View style={styles.historyItemLeft}>
+        <Ionicons color={colors.textSecondary} name={icon} size={19} />
+        <Text style={styles.navLabel}>{label}</Text>
+      </View>
+      <Ionicons color={colors.inactive} name="chevron-forward" size={18} />
     </TouchableOpacity>
   );
 
@@ -48,6 +70,11 @@ const DrawerContent = ({ navigation }) => {
           <Text style={styles.title}>LexiDict</Text>
           <Text style={styles.subtitle}>Premium Lexicon</Text>
         </View>
+      </View>
+
+      <View style={styles.navBlock}>
+        {renderNavItem('bookmark-outline', 'My Favorites', 'Favorites')}
+        {renderNavItem('settings-outline', 'Settings', 'Settings')}
       </View>
 
       <View style={styles.labelBlock}>
@@ -65,7 +92,7 @@ const DrawerContent = ({ navigation }) => {
         />
       ) : (
         <View style={styles.emptyState}>
-          <Ionicons color={COLORS.textSecondary} name="search" size={48} />
+          <Ionicons color={colors.textSecondary} name="search" size={48} />
           <Text style={styles.emptyText}>
             No searches yet. Start exploring words!
           </Text>
@@ -77,9 +104,10 @@ const DrawerContent = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) =>
+  StyleSheet.create({
   container: {
-    backgroundColor: COLORS.surfaceContainer,
+    backgroundColor: colors.surfaceContainer,
     flex: 1,
     paddingBottom: SPACING.lg,
     paddingTop: SPACING.lg
@@ -96,23 +124,43 @@ const styles = StyleSheet.create({
     width: 48
   },
   title: {
-    color: COLORS.accentLight,
+    color: colors.accentLight,
     fontFamily: FONTS.bodyBold,
     fontSize: 20,
     lineHeight: 28
   },
   subtitle: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20
+  },
+  navBlock: {
+    marginBottom: SPACING.lg,
+    paddingHorizontal: SPACING.sm
+  },
+  navItem: {
+    alignItems: 'center',
+    borderRadius: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.xs,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 12
+  },
+  navLabel: {
+    color: colors.textPrimary,
+    flex: 1,
+    fontFamily: FONTS.bodyMed,
+    fontSize: 15,
+    lineHeight: 22
   },
   labelBlock: {
     marginBottom: SPACING.sm,
     paddingHorizontal: SPACING.screen
   },
   label: {
-    color: COLORS.outline,
+    color: colors.outline,
     fontFamily: FONTS.bodyBold,
     fontSize: 12,
     letterSpacing: 0.8,
@@ -120,7 +168,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase'
   },
   divider: {
-    backgroundColor: COLORS.outlineVariant,
+    backgroundColor: colors.outlineVariant,
     height: StyleSheet.hairlineWidth,
     marginTop: SPACING.sm
   },
@@ -144,7 +192,7 @@ const styles = StyleSheet.create({
     gap: SPACING.sm
   },
   historyWord: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     flex: 1,
     fontFamily: FONTS.bodyMed,
     fontSize: 15,
@@ -157,7 +205,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.screen
   },
   emptyText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20,
@@ -166,7 +214,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   footer: {
-    color: COLORS.inactive,
+    color: colors.inactive,
     fontFamily: FONTS.body,
     fontSize: 11,
     lineHeight: 16,

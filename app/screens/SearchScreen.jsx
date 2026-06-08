@@ -14,13 +14,16 @@ import AppHeader from '../components/AppHeader';
 import ErrorMessage from '../components/ErrorMessage';
 import LoadingDots from '../components/LoadingDots';
 import SearchBar from '../components/SearchBar';
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 import { useDictionary } from '../hooks/useDictionary';
 
 const SearchScreen = ({ navigation }) => {
   const quote = '"The dictionary is the universe in alphabetical order."';
   const [query, setQuery] = useState('');
   const { loading, error, search } = useDictionary();
+  const { colors, settings } = useSettings();
+  const styles = createStyles(colors);
 
   const openDrawer = () => navigation.getParent()?.openDrawer();
 
@@ -43,7 +46,7 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar style="light" />
+      <StatusBar style={settings.darkMode ? 'light' : 'dark'} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboard}
@@ -79,7 +82,7 @@ const SearchScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.hint}>
-            <Ionicons color={COLORS.textSecondary} name="information-circle-outline" size={14} />
+            <Ionicons color={colors.textSecondary} name="information-circle-outline" size={14} />
             <Text style={styles.hintText}>Tap the menu to revisit past searches</Text>
           </View>
         </View>
@@ -88,9 +91,9 @@ const SearchScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   safeArea: {
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     flex: 1
   },
   keyboard: {
@@ -106,19 +109,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   quoteBlock: {
-    borderLeftColor: COLORS.accentLight,
+    borderLeftColor: colors.accentLight,
     borderLeftWidth: 4,
     marginBottom: SPACING.huge,
     paddingLeft: SPACING.sm
   },
   quote: {
-    color: COLORS.outlineVariant,
+    color: colors.outlineVariant,
     fontFamily: FONTS.displayIt,
     fontSize: 32,
     lineHeight: 40
   },
   subtitle: {
-    color: COLORS.textTertiary,
+    color: colors.textTertiary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20,
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   hintText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 12,
     lineHeight: 18

@@ -3,10 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo, useState } from 'react';
 
 import AppHeader from '../components/AppHeader';
+import BookmarkButton from '../components/BookmarkButton';
 import LoadingDots from '../components/LoadingDots';
 import MeaningSection from '../components/MeaningSection';
 import WordHeroCard from '../components/WordHeroCard';
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 import { useDictionary } from '../hooks/useDictionary';
 
 const getPhonetic = (wordData) =>
@@ -24,6 +26,8 @@ const getAudioUrl = (wordData) => {
 const WordDetailScreen = ({ navigation, route }) => {
   const [detailData, setDetailData] = useState(route.params?.wordData || null);
   const { loading, search } = useDictionary();
+  const { colors, settings } = useSettings();
+  const styles = createStyles(colors);
   const word = route.params?.word;
   const openDrawer = () => navigation.getParent()?.openDrawer();
 
@@ -68,10 +72,15 @@ const WordDetailScreen = ({ navigation, route }) => {
   if (loading || !detailData) {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" />
+        <StatusBar style={settings.darkMode ? 'light' : 'dark'} />
         <AppHeader
           onBackPress={() => navigation.goBack()}
           onMenuPress={openDrawer}
+          rightElement={
+            detailData ? (
+              <BookmarkButton word={detailData.word} wordData={detailData} />
+            ) : undefined
+          }
           showBack
           title={word || 'LexiDict'}
         />
@@ -84,10 +93,13 @@ const WordDetailScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar style="light" />
+      <StatusBar style={settings.darkMode ? 'light' : 'dark'} />
       <AppHeader
         onBackPress={() => navigation.goBack()}
         onMenuPress={openDrawer}
+        rightElement={
+          <BookmarkButton word={detailData.word} wordData={detailData} />
+        }
         showBack
         title={detailData.word || 'LexiDict'}
       />
@@ -112,9 +124,9 @@ const WordDetailScreen = ({ navigation, route }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   safeArea: {
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.background,
     flex: 1
   },
   scrollContent: {
@@ -128,7 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   emptyText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
     fontSize: 14,
     lineHeight: 20,

@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { COLORS, FONTS, SPACING } from '../constants';
+import { FONTS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 import PartOfSpeechBadge from './PartOfSpeechBadge';
 
 const MeaningSection = ({ meaning }) => {
+  const { colors, fontSizes } = useSettings();
+  const styles = createStyles(colors, fontSizes);
   const definitions = Array.isArray(meaning?.definitions)
     ? meaning.definitions
     : [];
@@ -37,7 +40,7 @@ const MeaningSection = ({ meaning }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors, fontSizes) => StyleSheet.create({
   section: {
     marginBottom: SPACING.xl
   },
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md
   },
   line: {
-    backgroundColor: COLORS.border,
+    backgroundColor: colors.border,
     flex: 1,
     height: StyleSheet.hairlineWidth
   },
@@ -56,8 +59,8 @@ const styles = StyleSheet.create({
     gap: SPACING.md
   },
   definitionRow: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: 'row',
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md
   },
   number: {
-    color: COLORS.accentContainer,
+    color: colors.accentContainer,
     fontFamily: FONTS.bodyBold,
     fontSize: 20,
     lineHeight: 28
@@ -75,21 +78,21 @@ const styles = StyleSheet.create({
     gap: SPACING.sm
   },
   definition: {
-    color: COLORS.textPrimary,
+    color: colors.textPrimary,
     fontFamily: FONTS.body,
-    fontSize: 17,
-    lineHeight: 26
+    fontSize: fontSizes.definition,
+    lineHeight: fontSizes.definition + 9
   },
   example: {
-    borderLeftColor: COLORS.border,
+    borderLeftColor: colors.border,
     borderLeftWidth: 2,
     paddingLeft: SPACING.md,
     paddingVertical: SPACING.xs
   },
   exampleText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontFamily: FONTS.body,
-    fontSize: 14,
+    fontSize: fontSizes.body,
     fontStyle: 'italic',
     lineHeight: 20
   }

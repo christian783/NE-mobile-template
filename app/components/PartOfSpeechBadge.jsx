@@ -1,16 +1,20 @@
 import { StyleSheet, Text } from 'react-native';
 
-import { COLORS, FONTS, RADIUS, SPACING } from '../constants';
+import { FONTS, RADIUS, SPACING } from '../constants';
+import { useSettings } from '../context/SettingsContext';
 
-const PartOfSpeechBadge = ({ label }) => (
-  <Text style={styles.badge}>{label}</Text>
-);
+const PartOfSpeechBadge = ({ label }) => {
+  const { colors } = useSettings();
+  const styles = createStyles(colors);
 
-const styles = StyleSheet.create({
+  return <Text style={styles.badge}>{label}</Text>;
+};
+
+const createStyles = (colors) => StyleSheet.create({
   badge: {
-    backgroundColor: COLORS.accentMuted,
+    backgroundColor: colors.accentMuted,
     borderRadius: RADIUS.full,
-    color: COLORS.accentLight,
+    color: colors.accentLight,
     fontFamily: FONTS.bodyBold,
     fontSize: 12,
     letterSpacing: 0.8,
