@@ -1,15 +1,11 @@
-export const API_PROVIDER =
-  (process.env.EXPO_PUBLIC_API_PROVIDER || 'mockapi').toLowerCase();
+export const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_BASE_URL ||
+  'https://api.dictionaryapi.dev/api/v2/entries/en';
 
-export const SERVER_BASE_URL =
-  process.env.EXPO_PUBLIC_SERVER_BASE_URL ||
-  'https://your-api-base-url.com/api/v1';
+export const HISTORY_KEY =
+  process.env.EXPO_PUBLIC_HISTORY_STORAGE_KEY || 'lexi_search_history';
 
-export const MOCK_API_BASE_URL =
-  process.env.EXPO_PUBLIC_MOCK_API_BASE_URL ||
-  'https://your-project-id.mockapi.io/api/v1';
-
-export const USE_MOCK_API = API_PROVIDER === 'mockapi';
-export const BASE_URL = USE_MOCK_API ? MOCK_API_BASE_URL : SERVER_BASE_URL;
-export const TOKEN_KEY = 'auth_token';
-export const USER_KEY = 'auth_user';
+export default {
+  API_BASE_URL,
+  HISTORY_KEY
+};

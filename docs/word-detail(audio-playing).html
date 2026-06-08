@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LexiDict - Ephemeral (Playing)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&amp;family=Playfair+Display:wght@700&amp;family=JetBrains+Mono:wght@450&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "inverse-on-surface": "#2f3131",
+                        "on-tertiary": "#003825",
+                        "tertiary-fixed-dim": "#45dfa4",
+                        "surface-container-low": "#1a1c1c",
+                        "on-error": "#690005",
+                        "secondary": "#cebdff",
+                        "surface": "#121414",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary-fixed": "#002114",
+                        "on-secondary-fixed": "#21005e",
+                        "tertiary-container": "#00a574",
+                        "on-surface": "#e2e2e2",
+                        "background": "#121414",
+                        "surface-bright": "#38393a",
+                        "secondary-fixed": "#e8ddff",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#004492",
+                        "on-tertiary-fixed-variant": "#005137",
+                        "on-primary-container": "#00285b",
+                        "on-primary": "#002f68",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline": "#8c909e",
+                        "on-secondary-container": "#bea8ff",
+                        "outline-variant": "#424753",
+                        "primary-container": "#508ff8",
+                        "surface-dim": "#121414",
+                        "on-primary-fixed": "#001a40",
+                        "surface-container-highest": "#333535",
+                        "surface-variant": "#333535",
+                        "tertiary": "#45dfa4",
+                        "surface-container-high": "#282a2b",
+                        "primary": "#acc7ff",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#005bbf",
+                        "on-tertiary-container": "#003120",
+                        "on-secondary": "#381385",
+                        "surface-tint": "#acc7ff",
+                        "secondary-container": "#4f319c",
+                        "primary-fixed-dim": "#acc7ff",
+                        "secondary-fixed-dim": "#cebdff",
+                        "primary-fixed": "#d7e2ff",
+                        "tertiary-fixed": "#68fcbf",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-container": "#1e2020",
+                        "on-secondary-fixed-variant": "#4f319c",
+                        "on-surface-variant": "#c2c6d5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "container-margin": "20px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "huge": "48px",
+                        "xs": "8px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["DM Sans"],
+                        "display-word": ["Playfair Display"],
+                        "label-caps": ["DM Sans"],
+                        "display-word-mobile": ["Playfair Display"],
+                        "phonetic-mono": ["JetBrains Mono"],
+                        "helper-text": ["DM Sans"],
+                        "definition-body": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "display-word": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+                        "display-word-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                        "phonetic-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "450" }],
+                        "helper-text": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "definition-body": ["17px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0D0D0D;
+            color: #e2e2e2;
+        }
+        
+        /* Pulse Animation for Audio Button */
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(79, 142, 247, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 15px rgba(79, 142, 247, 0);
+            }
+            100% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(79, 142, 247, 0);
+            }
+        }
+        
+        .audio-playing-ripple {
+            animation: pulse-ring 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .audio-playing-icon {
+            color: #acc7ff; /* text-primary */
+        }
+        
+        /* Level 1 Card styling based on guidelines */
+        .def-card {
+            background-color: #1A1A1A;
+            border: 1px solid #2A2A2A;
+        }
+        
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2A2A2A; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4F8EF7; 
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-center bg-black overflow-hidden relative">
+<!-- Mobile Frame Container (Simulating iPhone 14) -->
+<div class="w-[390px] h-[844px] bg-background dark:bg-background rounded-[40px] overflow-hidden flex flex-col relative shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-[#2A2A2A]">
+<!-- TopAppBar (From JSON) -->
+<!-- Suppressing trailing search icon as this is a focused detail view, replacing leading with 'arrow_back' for navigation intent -->
+<header class="bg-background dark:bg-background w-full px-container-margin h-16 flex justify-between items-center shrink-0 z-10 sticky top-0">
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container dark:hover:bg-surface-container p-2 rounded-full transition-colors duration-200 ease-in-out flex items-center justify-center">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-display-word-mobile text-display-word-mobile font-bold text-on-background dark:text-on-background tracking-tight">LexiDict</h1>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container dark:hover:bg-surface-container p-2 rounded-full transition-colors duration-200 ease-in-out flex items-center justify-center">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</header>
+<!-- Main Content Area - Scrollable -->
+<main class="flex-1 overflow-y-auto px-container-margin pb-[env(safe-area-inset-bottom,20px)] pt-sm flex flex-col gap-xl">
+<!-- Hero Section: Word & Phonetics -->
+<section class="flex flex-col gap-sm items-start relative z-0">
+<h2 class="font-display-word-mobile text-display-word-mobile text-on-background">ephemeral</h2>
+<div class="flex items-center gap-md">
+<!-- Phonetic Chip -->
+<div class="bg-[#A78BFA]/10 text-[#A78BFA] font-phonetic-mono text-phonetic-mono px-3 py-1 rounded-md flex items-center">
+                        /ɪˈfem.ər.əl/
+                    </div>
+<!-- Audio Toggle Button (Playing State) -->
+<button aria-label="Play pronunciation" class="relative w-10 h-10 rounded-full bg-surface-container flex items-center justify-center audio-playing-ripple transition-colors">
+<span class="material-symbols-outlined audio-playing-icon" data-weight="fill" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+</button>
+<span class="font-helper-text text-helper-text text-primary ml-1 animate-pulse">Playing...</span>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-xs tracking-wider">
+                    adjective
+                </div>
+</section>
+<!-- Definitions Section -->
+<section class="flex flex-col gap-md">
+<!-- Definition Card 1 -->
+<article class="def-card rounded-lg p-md flex flex-col gap-sm">
+<div class="flex gap-sm">
+<span class="font-headline-md text-headline-md text-primary-container">1.</span>
+<div class="flex flex-col gap-xs">
+<p class="font-definition-body text-definition-body text-on-background">
+                                Lasting for a very short time; transitory or short-lived.
+                            </p>
+<p class="font-helper-text text-helper-text text-on-surface-variant italic border-l-2 border-[#2A2A2A] pl-3 py-1 mt-1">
+                                "Fashions are ephemeral."
+                            </p>
+</div>
+</div>
+</article>
+<!-- Definition Card 2 -->
+<article class="def-card rounded-lg p-md flex flex-col gap-sm">
+<div class="flex gap-sm">
+<span class="font-headline-md text-headline-md text-primary-container">2.</span>
+<div class="flex flex-col gap-xs">
+<p class="font-definition-body text-definition-body text-on-background">
+                                (chiefly of plants) Having a very short life cycle.
+                            </p>
+<p class="font-helper-text text-helper-text text-on-surface-variant italic border-l-2 border-[#2A2A2A] pl-3 py-1 mt-1">
+                                "Ephemeral plants that emerge briefly in the desert after rain."
+                            </p>
+</div>
+</div>
+</article>
+</section>
+<!-- Synonyms Section -->
+<section class="flex flex-col gap-md pt-lg border-t border-[#2A2A2A]">
+<h3 class="font-headline-md text-headline-md text-on-surface">Synonyms</h3>
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container text-on-surface px-3 py-1.5 rounded-full font-helper-text text-helper-text border border-outline-variant/30">transitory</span>
+<span class="bg-surface-container text-on-surface px-3 py-1.5 rounded-full font-helper-text text-helper-text border border-outline-variant/30">fleeting</span>
+<span class="bg-surface-container text-on-surface px-3 py-1.5 rounded-full font-helper-text text-helper-text border border-outline-variant/30">evanescent</span>
+<span class="bg-surface-container text-on-surface px-3 py-1.5 rounded-full font-helper-text text-helper-text border border-outline-variant/30">momentary</span>
+</div>
+</section>
+<!-- Etymology Section -->
+<section class="flex flex-col gap-sm pt-lg pb-huge border-t border-[#2A2A2A]">
+<h3 class="font-headline-md text-headline-md text-on-surface">Etymology</h3>
+<p class="font-helper-text text-helper-text text-on-surface-variant leading-relaxed">
+                    Late 16th century: from Greek <i class="text-on-background">ephēmeros</i> (from <i class="text-on-background">epi</i> 'on' + <i class="text-on-background">hēmera</i> 'day') + -al.
+                </p>
+</section>
+</main>
+<!-- Navigation Shell Suppressed: Contextual Detail Screen -->
+<!-- No Bottom Nav as this is a focused task/detail view where user intention is reading, not global navigation. -->
+</div>
+</body></html>

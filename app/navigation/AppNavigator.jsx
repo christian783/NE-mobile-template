@@ -1,43 +1,54 @@
-import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import Loader from '../components/Loader';
-import useAuth from '../hooks/useAuth';
-import AppTabs from './AppTabs';
-import AuthStack from './AuthStack';
-import { navigationRef, resetRoot } from './navigationRef';
+import { COLORS } from '../constants';
+import { HistoryProvider } from '../context/HistoryContext';
+import NetworkErrorScreen from '../screens/NetworkErrorScreen';
+import SearchScreen from '../screens/SearchScreen';
+import SplashScreen from '../screens/SplashScreen';
+import WordDetailScreen from '../screens/WordDetailScreen';
+import WordNotFoundScreen from '../screens/WordNotFoundScreen';
+import DrawerContent from './DrawerContent';
+import { navigationRef } from './navigationRef';
 
-const RootStack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-const AppNavigator = () => {
-  const { isAuthenticated, isLoading } = useAuth();
-  const [isNavigationReady, setIsNavigationReady] = useState(false);
+const MainStack = () => (
+  <Stack.Navigator
+    initialRouteName="Splash"
+    screenOptions={{
+      headerShown: false,
+      cardStyle: { backgroundColor: COLORS.background }
+    }}
+  >
+    <Stack.Screen name="Splash" component={SplashScreen} />
+    <Stack.Screen name="Search" component={SearchScreen} />
+    <Stack.Screen name="WordDetail" component={WordDetailScreen} />
+    <Stack.Screen name="NotFound" component={WordNotFoundScreen} />
+    <Stack.Screen name="NetworkError" component={NetworkErrorScreen} />
+  </Stack.Navigator>
+);
 
-  useEffect(() => {
-    if (isNavigationReady) {
-      resetRoot(isAuthenticated ? 'App' : 'Auth');
-    }
-  }, [isAuthenticated, isNavigationReady]);
-
-  if (isLoading) {
-    return <Loader fullScreen message="Preparing your session..." />;
-  }
-
-  return (
-    <NavigationContainer
-      ref={navigationRef}
-      onReady={() => setIsNavigationReady(true)}
-    >
-      <RootStack.Navigator
-        initialRouteName={isAuthenticated ? 'App' : 'Auth'}
-        screenOptions={{ headerShown: false }}
+const AppNavigator = () => (
+  <NavigationContainer ref={navigationRef}>
+    <HistoryProvider>
+      <Drawer.Navigator
+        drawerContent={(props) => <DrawerContent {...props} />}
+        screenOptions={{
+          drawerStyle: {
+            backgroundColor: COLORS.surfaceDeep,
+            width: '75%'
+          },
+          headerShown: false,
+          overlayColor: 'rgba(0,0,0,0.5)'
+        }}
       >
-        <RootStack.Screen name="Auth" component={AuthStack} />
-        <RootStack.Screen name="App" component={AppTabs} />
-      </RootStack.Navigator>
-    </NavigationContainer>
-  );
-};
+        <Drawer.Screen name="Main" component={MainStack} />
+      </Drawer.Navigator>
+    </HistoryProvider>
+  </NavigationContainer>
+);
 
 export default AppNavigator;

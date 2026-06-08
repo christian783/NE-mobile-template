@@ -1,24 +1,39 @@
-import { StyleSheet } from 'react-native';
-import { HelperText } from 'react-native-paper';
+import { Animated, StyleSheet, Text } from 'react-native';
+import { useEffect, useState } from 'react';
 
-import { COLORS } from '../constants/colors';
+import { COLORS, FONTS, SPACING } from '../constants';
 
-const ErrorMessage = ({ message, visible = Boolean(message), style }) => {
-  if (!visible) {
+const ErrorMessage = ({ message, style }) => {
+  const [opacity] = useState(() => new Animated.Value(0));
+
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 180,
+      useNativeDriver: true
+    }).start();
+  }, [opacity]);
+
+  if (!message) {
     return null;
   }
 
   return (
-    <HelperText type="error" visible={visible} style={[styles.text, style]}>
-      {message}
-    </HelperText>
+    <Animated.View style={[styles.container, { opacity }, style]}>
+      <Text style={styles.text}>{message}</Text>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: SPACING.sm
+  },
   text: {
     color: COLORS.error,
-    paddingHorizontal: 0
+    fontFamily: FONTS.body,
+    fontSize: 14,
+    lineHeight: 20
   }
 });
 
